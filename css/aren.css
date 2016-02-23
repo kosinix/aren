@@ -1,0 +1,483 @@
+/* CSS here favors readability over performance for easy comprehension and modification. */
+
+/* Use border-box as default box model */
+.aren-nav {
+    box-sizing: border-box;
+}
+
+/* Preserve box model inheritance */
+.aren-nav *,
+.aren-nav *:before,
+.aren-nav *:after {
+    box-sizing: inherit;
+}
+
+/* Remove focus outline */
+.aren-navbar:focus,
+.aren-navbar *:focus,
+.aren-nav:focus,
+.aren-nav *:focus{
+    outline: 0;
+}
+
+/* Reset list */
+.aren-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Clear floats inside these elements */
+.aren-nav:after,
+.aren-nav ul:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+/* List */
+.aren-nav li {
+    position: relative;
+}
+
+/* Links */
+.aren-nav a {
+    text-decoration: none;
+}
+
+/* Breakout. Workaround for js to know the current breakout */
+/* Width here is used as an index of the current breakout. Integer from 0 to 10px */
+.aren-breakout {
+    display: none;
+}
+
+/*** BREAKOUTS ***/
+
+/* Responsive breakout at <= 600 */
+/* Ideal for mobile devices */
+@media ( max-width: 600px ) {
+
+    /* Breakout 0 */
+    .aren-breakout {
+        width: 0;
+    }
+
+    /*** STRUCTURE ***/
+
+    /* Links */
+    .aren-nav a {
+        display: block;
+        padding: 15px;
+    }
+
+    /* Level 2 links */
+    .aren-nav ul ul a {
+        padding-left: 40px;
+    }
+
+    /* Level 3 links */
+    .aren-nav ul ul ul a {
+        padding-left: 80px;
+    }
+
+    /* Level 4 links */
+    .aren-nav ul ul ul ul a {
+        padding-left: 90px;
+    }
+
+    /* Sub nav */
+    .aren-sub-menu {
+        display: none;
+    }
+    .aren-nav-expanded > .aren-sub-menu{
+        display: block;
+    }
+
+    /* Expander */
+    .aren-expander {
+        display: block;
+        width: 50px;
+        height: 49px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+    }
+
+    /* Expander arrow */
+    .aren-expander:after {
+        content: "";
+        position: absolute;
+        height: 0;
+        width: 0;
+        left: 50%;
+        top: 50%;
+        margin: -2px 0 0 -5px;
+        transition: margin 200ms ease-out;
+    }
+
+    /* Show visual cue for expanded nav */
+    .aren-nav-expanded > .aren-expander:after {
+        margin-top: 1px;
+    }
+
+    /* Expander arrow up */
+    .aren-expander:after {
+        border-style: solid;
+        border-width: 0 5px 5px 5px;
+    }
+
+    /* Expander arrow down */
+    .aren-nav-collapsed > .aren-expander:after {
+        border-width: 5px 5px 0 5px;
+    }
+
+    /* Toggle */
+    .aren-nav-toggle {
+        border: 0;
+        width: 50px;
+        height: 50px;
+        padding: 10px;
+        position: relative;
+        z-index: 10;
+    }
+
+    /* Toggle icon bar */
+    .aren-nav-toggle .icon-bar {
+        display: block;
+        height: 5px;
+        width: 30px;
+        position: absolute;
+        left: 10px;
+    }
+
+    /* Animate first and last bar only. Hide middle bar immediately, no animation */
+    .aren-nav-toggle :first-child,
+    .aren-nav-toggle :last-child {
+        transition: all 200ms ease-out;
+    }
+
+    .aren-nav-toggle :first-child {
+        top: 10px;
+    }
+
+    .aren-nav-toggle :nth-child(2) {
+        top: -2.5px;
+        margin-top: 50%;
+    }
+
+    .aren-nav-toggle :last-child {
+        bottom: 10px;
+    }
+
+    .aren-nav-toggle :last-child.icon-bar {
+        margin-bottom: 0;
+    }
+
+    /* Nav toggle in active state */
+    .aren-toggle-active {
+        background: #dddddd;
+    }
+
+    .aren-toggle-active .icon-bar {
+        opacity: 0;
+    }
+
+    .aren-toggle-active :first-child,
+    .aren-toggle-active :last-child {
+        opacity: 1;
+        -webkit-transform-origin: left center; /* For older browsers */
+        -moz-transform-origin: left center;
+        -ms-transform-origin: left center;
+        -o-transform-origin: left center;
+        transform-origin: left center;
+    }
+
+    .aren-toggle-active :first-child {
+        left: 14px;
+        top: 12px;
+        -webkit-transform: rotate(45deg); /* For older browsers */
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .aren-toggle-active :last-child {
+        left: 14px;
+        bottom: 12px;
+        -webkit-transform: rotate(-45deg); /* For older browsers */
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+
+    /* Hide */
+    .aren-hide-nav {
+        display: none;
+    }
+
+    /*** THEMES ***/
+
+    /** DARK THEME **/
+
+    /* Nav */
+    .aren-theme-dark.aren-nav {
+        background: #000000;
+    }
+
+    /* Links */
+    .aren-theme-dark.aren-nav a {
+        color: #ffffff;
+    }
+
+    /* Links hover on click */
+    .aren-theme-dark.aren-nav a:active {
+        padding-top: 16px;
+        padding-bottom: 14px;
+    }
+
+    /* Links hover on focus */
+    .aren-theme-dark.aren-nav a:hover,
+    .aren-theme-dark.aren-nav a:focus {
+        background: #222222;
+    }
+
+    /* Expander */
+    .aren-theme-dark .aren-expander:hover,
+    .aren-theme-dark .aren-expander:focus {
+        background: #222222;
+    }
+
+    /* Expander arrow up */
+    .aren-theme-dark .aren-expander:after {
+        border-color: #fff transparent;
+    }
+
+    /* Expander arrow down */
+    .aren-theme-dark .aren-nav-collapsed > .aren-expander:after {
+        border-color: #fff transparent;
+    }
+
+    /* Expander hover focus */
+    .aren-theme-dark .aren-expander:hover:after,
+    .aren-theme-dark .aren-expander:focus:after {
+        border-color: #666 transparent;
+    }
+
+    /* Toggle dark */
+    .aren-theme-dark.aren-nav-toggle {
+        background: #000000;
+    }
+
+    .aren-theme-dark.aren-nav-toggle .icon-bar {
+        background: #cccccc;
+    }
+
+    .aren-theme-dark.aren-nav-toggle:hover .icon-bar,
+    .aren-theme-dark.aren-nav-toggle:focus .icon-bar {
+        background: #fff;
+    }
+
+    /** LIGHT THEME **/
+
+    /* Nav */
+    .aren-theme-light.aren-nav {
+        background: #ffffff;
+    }
+
+    /* Links */
+    .aren-theme-light.aren-nav a {
+        color: #222;
+    }
+
+    /* Links hover focus */
+    .aren-theme-light.aren-nav a:hover,
+    .aren-theme-light.aren-nav a:focus {
+        background: #eeeeee;
+    }
+
+    /* Expander */
+    .aren-theme-light .aren-expander:hover,
+    .aren-theme-light .aren-expander:focus {
+        background: #eeeeee;
+    }
+
+    /* Expander arrow up */
+    .aren-theme-light .aren-expander:after {
+        border-color: #000 transparent;
+    }
+
+    /* Expander arrow down */
+    .aren-theme-light .aren-nav-collapsed > .aren-expander:after {
+        border-color: #000 transparent;
+    }
+
+    /* Expander hover focus */
+    .aren-theme-light .aren-expander:hover:after,
+    .aren-theme-light .aren-expander:focus:after {
+        border-color: #666 transparent;
+    }
+
+    /* Toggle dark */
+    .aren-theme-light.aren-nav-toggle {
+        background: #ffffff;
+    }
+
+    .aren-theme-light.aren-nav-toggle .icon-bar {
+        background: #aaaaaa;
+    }
+
+    .aren-theme-light.aren-nav-toggle:hover .icon-bar,
+    .aren-theme-light.aren-nav-toggle:focus .icon-bar {
+        background: #000000;
+    }
+
+}
+
+/* Responsive breakout at >= 601 */
+/* Ideal for desktop */
+@media ( min-width: 601px ) {
+
+    /* Breakout 1 */
+    .aren-breakout {
+        width: 1px;
+    }
+
+    /*** STRUCTURE ***/
+
+    /* 1st level item */
+    .aren-nav > ul > li {
+        float: left;
+    }
+
+    /* Links */
+    .aren-nav a {
+        display: block;
+        padding: 10px 12px;
+    }
+
+    /* Pad items with children */
+    .aren-nav li.aren-nav-parent a {
+        padding-right: 30px;
+    }
+
+    /* Toggle */
+    .aren-nav-toggle {
+        display: none;
+    }
+
+    /* 1st level sub menus */
+    .aren-sub-menu {
+        position: absolute;
+        top: 100%;
+        min-width: 200px;
+        z-index: 1000;
+        display: none;
+    }
+
+    /* 2nd level sub menus */
+    .aren-sub-menu .aren-sub-menu{
+        top: 0;
+        left: 100%;
+    }
+
+    .aren-nav-expanded > .aren-sub-menu {
+        display: block;
+    }
+
+    /* Expander */
+    .aren-expander {
+        width: 20px;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+        border: 0;
+        background: none;
+    }
+
+    /* Expander arrow */
+    .aren-expander:after {
+        content: "";
+        position: absolute;
+        height: 0;
+        width: 0;
+        left: 50%;
+        top: 50%;
+        margin: -5px 0 0 -2px;
+    }
+
+
+    /* Expander down arrow */
+    .aren-nav > ul > li > .aren-expander:after {
+        border-color: #777 transparent;
+        border-style: solid;
+        border-width: 5px 5px 0 5px;
+        margin: -2px 0 0 -5px;
+    }
+
+    /* Expander up arrow */
+    .aren-nav > ul > li.aren-nav-expanded > .aren-expander:after {
+        border-color: #777 transparent;
+        border-style: solid;
+        border-width: 0 5px 5px 5px;
+        margin: -2px 0 0 -5px;
+    }
+
+    .aren-expander:after {
+        /* Right arrow */
+        border-color: transparent #777;
+        border-style: solid;
+        border-width: 5px 0 5px 5px;
+    }
+
+    .aren-nav-expanded > .aren-expander:after {
+        /* Left arrow */
+        border-color: transparent #777;
+        border-style: solid;
+        border-width: 5px 5px 5px 0;
+    }
+
+    /*** THEMES ***/
+
+    /** DARK THEME **/
+
+    /* Nav */
+    .aren-theme-dark.aren-nav {
+        background: #000000;
+    }
+
+    /* Links */
+    .aren-theme-dark.aren-nav a {
+        color: #ffffff;
+    }
+
+    /* Links hover on click */
+    .aren-theme-dark.aren-nav a:active {
+        padding-top: 11px;
+        padding-bottom: 9px;
+    }
+
+    /* Links hover on focus */
+    .aren-theme-dark.aren-nav a:hover,
+    .aren-theme-dark.aren-nav a:focus {
+        background: #222222;
+    }
+
+    /* Expander */
+    .aren-theme-dark .aren-expander:hover,
+    .aren-theme-dark .aren-expander:focus,
+    .aren-theme-dark .aren-expander:active {
+        background: #222222;
+    }
+
+    /* Sub menus */
+    .aren-theme-dark .aren-sub-menu {
+        background: #000000;
+    }
+}
