@@ -66,6 +66,17 @@
 
     /*** STRUCTURE ***/
 
+    /* Hide nav by default.
+    Hide nav when js has not loaded yet */
+    .aren-nav {
+        display: none;
+    }
+
+    /* Show nav when toggle is clicked on mobile */
+    .aren-nav-show {
+        display: block;
+    }
+
     /* Links */
     .aren-nav a {
         display: block;
@@ -153,7 +164,9 @@
         left: 10px;
     }
 
-    /* Animate first and last bar only. Hide middle bar immediately, no animation */
+    /* Toggle icon bars transform to X when active. Reverts to hamburger menu form when not. */
+
+    /* Animate first and last bar only. Hide middle bar immediately, no animation. */
     .aren-nav-toggle :first-child,
     .aren-nav-toggle :last-child {
         transition: all 200ms ease-out;
@@ -213,11 +226,6 @@
         -ms-transform: rotate(-45deg);
         -o-transform: rotate(-45deg);
         transform: rotate(-45deg);
-    }
-
-    /* Hide */
-    .aren-hide-nav {
-        display: none;
     }
 
     /*** THEMES ***/
@@ -348,7 +356,6 @@
     }
 
     /*** STRUCTURE ***/
-
     /* 1st level item */
     .aren-nav > ul > li {
         float: left;
@@ -385,6 +392,13 @@
         left: 100%;
     }
 
+    /* Hide sub menus. Hide it when JS has not loaded yet.
+    Make sure the nav class is added to <nav> html for this to work. */
+    .aren-nav > ul > li > ul {
+        display: none;
+    }
+
+    /* Show expanded sub menu */
     .aren-nav-expanded > .aren-sub-menu {
         display: block;
     }
