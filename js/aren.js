@@ -10,12 +10,12 @@
     var timers = {},
         methods = {
         init: function (settings) {
-            //Default plugin settings
+            /* Default plugin settings */
             var defaults = {
                 cssClass: {
                     nav: 'aren-nav',
                     expander: 'aren-expander',
-                    hideNav: 'aren-hide-nav',
+                    showNav: 'aren-nav-show',
                     collapsed: 'aren-nav-collapsed',
                     expanded: 'aren-nav-expanded',
                     parent: 'aren-nav-parent',
@@ -32,8 +32,8 @@
                     {
                         callback: {
                             onResize: function(css, nav){
-                                nav.children('ul').children('li').each(function (i) {
-                                    _fixExpanderHeight(css, $(this), 0); // Adjust expander height
+                                nav.children('ul').children('li').each(function () {
+                                    _fixExpanderHeight(css, $(this), 0); /* Adjust expander height */
                                 });
                             },
                             onDocumentClick: function (e, css) {
@@ -47,24 +47,24 @@
                             },
                             onExpanderKeyDown: function (e, css, expander) {
 
-                                e = e || window.event; // Use param e if it exists. use window.event otherwise (for <=IE8)
+                                e = e || window.event; /* Use param e if it exists. use window.event otherwise (for <=IE8) */
 
-                                var key = e.keyCode; // Key pressed
+                                var key = e.keyCode; /* Key pressed */
 
-                                if (13 === key || 32 == key ) { // Enter and space key
+                                if (13 === key || 32 == key ) { /* Enter and space key */
 
                                     _expandCollapseMobile(css, expander);
                                 }
                             },
                             onToggleClick: function(e, css, toggle){
                                 var nav = $(toggle.data('target'));
-                                if (nav.hasClass(css.hideNav)) {
-                                    nav.removeClass(css.hideNav);
+                                if (nav.hasClass(css.showNav)) { /* Nav visible, hide it */
+                                    nav.removeClass(css.showNav);
+                                } else { /* Nav hidden, show it */
+                                    nav.addClass(css.showNav);
                                     nav.children('ul').children('li').each(function (i) {
-                                        _fixExpanderHeight(settings.cssClass, $(this), 0); // Adjust expander height
+                                        _fixExpanderHeight(settings.cssClass, $(this), 0); /* Adjust expander height */
                                     });
-                                } else {
-                                    nav.addClass(css.hideNav);
                                 }
                                 toggle.toggleClass(css.toggleActive);
                             }
@@ -74,7 +74,7 @@
                         callback: {
                             onResize: function(css, nav){
                                 nav.children('ul').children('li').each(function (i) {
-                                    _fixExpanderHeight(css, $(this), 0); // Adjust expander height
+                                    _fixExpanderHeight(css, $(this), 0); /* Adjust expander height */
                                 });
                             },
                             onDocumentClick: function (e, css) {
@@ -88,11 +88,11 @@
                             },
                             onExpanderKeyDown: function (e, css, expander) {
 
-                                e = e || window.event; // Use param e if it exists. use window.event otherwise (for <=IE8)
+                                e = e || window.event; /* Use param e if it exists. use window.event otherwise (for <=IE8) */
 
-                                var key = e.keyCode; // Key pressed
+                                var key = e.keyCode; /* Key pressed */
 
-                                if (13 === key || 32 === key) { // Enter and space key
+                                if (13 === key || 32 === key) { /* Enter and space key */
 
                                     _expandCollapseDesktop(css, expander)
 
@@ -105,21 +105,21 @@
                     }
                 ]
             };
-            settings = $.extend(true, {}, defaults, settings); // Combine defaults and user-provided settings
+            settings = $.extend(true, {}, defaults, settings); /* Combine defaults and user-provided settings */
 
             return this.each(function () {
-                var nav = $(this); // jQuery object of our selected element
+                var nav = $(this); /* jQuery object of our selected element */
 
-                // Add nav class and hide class
-                nav.addClass(settings.cssClass.nav).addClass(settings.cssClass.hideNav);
+                /* Add nav class */
+                nav.addClass(settings.cssClass.nav);
 
                 nav.children('ul').children('li').each(function (i) {
-                    _listItemInit(settings, $(this), 0); // Initialize each <li> element
+                    _listItemInit(settings, $(this), 0); /* Initialize each <li> element */
                 });
 
-                nav.append(settings.markup.breakout.replace('%s', settings.cssClass.breakout)); // Add breakout markup to nav
+                nav.append(settings.markup.breakout.replace('%s', settings.cssClass.breakout)); /* Add breakout markup to nav */
 
-                // UX
+                /* User interaction */
                 $(document).on('click', function(e){
 
                     settings.breakout[$.fn.arenBreakout].callback.onDocumentClick(e, settings.cssClass);
@@ -142,9 +142,9 @@
 
                 });
 
-                // Do something on browser resize
+                /* Do something on browser resize */
                 $(window).on('resize', function(){
-                    // Limit firing of resize
+                    /* Limit firing of resize */
                     _waitForFinalEvent(function(){
                         $.fn.arenBreakout = _currentBreakout(nav, settings);
                         settings.breakout[$.fn.arenBreakout].callback.onResize(settings.cssClass, nav);
@@ -156,22 +156,22 @@
     };
 
 
-    // Initialize list item
+    /* Initialize list item */
     function _listItemInit(settings, currentListItem, level) {
         var subNav = currentListItem.children('ul'),
             anchor = currentListItem.children('a');
 
         if (subNav.length > 0) {
-            subNav.addClass(settings.cssClass.subMenu); // Add sub menu class
-            currentListItem.addClass(settings.cssClass.parent); // Add parent class
+            subNav.addClass(settings.cssClass.subMenu); /* Add sub menu class */
+            currentListItem.addClass(settings.cssClass.parent); /* Add parent class to item */
             if (subNav.is(':visible')) {
                 currentListItem.addClass(settings.cssClass.expanded);
             } else {
                 currentListItem.addClass(settings.cssClass.collapsed);
             }
-            anchor.after(settings.markup.expander.replace('%s', settings.cssClass.expander)); // Add expander after <a>
-            _fixExpanderHeight(settings.cssClass, currentListItem); // Fix expander height
-            // Initialize children items recursively
+            anchor.after(settings.markup.expander.replace('%s', settings.cssClass.expander)); /* Add expander after <a> */
+            _fixExpanderHeight(settings.cssClass, currentListItem); /* Fix expander height */
+            /* Initialize children items recursively */
             subNav.children('li').each(function (i) {
                 _listItemInit(settings, $(this), ++level);
             });
@@ -179,7 +179,7 @@
         }
     }
 
-    // Fix expander height base on its neighboring <a> height
+    /* Fix expander height base on its neighboring <a> height */
     function _fixExpanderHeight(css, currentListItem) {
         var subNav = currentListItem.children('ul'),
             anchor = currentListItem.children('a');
@@ -189,36 +189,36 @@
         }
     }
 
-    // Expand or collapse on mobile
+    /* Expand or collapse on mobile */
     function _expandCollapseMobile(css, expander) {
 
         var subNav = expander.siblings('ul'),
             listItem = expander.parent();
 
-        if (subNav.is(':visible')) { // If visible, hide it
-            listItem.removeClass(css.expanded).addClass(css.collapsed); // Update parent classes
-        } else { // If hidden, show it
-            listItem.removeClass(css.collapsed).addClass(css.expanded); // Update parent classes
+        if (subNav.is(':visible')) { /* If visible, hide it */
+            listItem.removeClass(css.expanded).addClass(css.collapsed); /* Update parent classes */
+        } else { /* If hidden, show it */
+            listItem.removeClass(css.collapsed).addClass(css.expanded); /* Update parent classes */
         }
     }
 
-    // Expand or collapse on desktop
+    /* Expand or collapse on desktop */
     function _expandCollapseDesktop(css, expander) {
         var subNav = expander.siblings('ul'),
             listItem = subNav.parent();
 
-        if (subNav.is(':visible')) { // If visible, hide it
-            // Collapse current list
+        if (subNav.is(':visible')) { /* If visible, hide it */
+            /* Collapse current list */
             listItem.removeClass(css.expanded)
                 .addClass(css.collapsed);
-            // Collapse all expanded children
+            /* Collapse all expanded children */
             subNav.find('.'+css.expanded)
                 .removeClass(css.expanded)
                 .addClass(css.collapsed);
-        } else { // Show subNav. Use CSS
+        } else { /* Show subNav. Use CSS */
             listItem.removeClass(css.collapsed)
                 .addClass(css.expanded);
-            // Expand it
+            /* Expand it */
             listItem.siblings('.'+css.expanded).each(function(i, el){
                 $(el).removeClass(css.expanded)
                     .addClass(css.collapsed)
@@ -229,12 +229,12 @@
         }
     }
 
-    // Get current breakout from HTML
+    /* Get current breakout from HTML */
     function _currentBreakout(nav, settings){
         return nav.find('.'+settings.cssClass.breakout).width();
     }
 
-    // Wait on resize done
+    /* Wait on resize done */
     function _waitForFinalEvent (callback, ms, uniqueId) {
         if (!uniqueId) {
             uniqueId = "Don't call this twice without a uniqueId";
@@ -245,10 +245,10 @@
         timers[uniqueId] = setTimeout(callback, ms);
     }
 
-    // Plugin main
+    /* Plugin main */
     $.fn.aren = function (method) {
 
-        // Method calling logic
+        /* Method calling logic */
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {
@@ -257,7 +257,7 @@
         return false;
     };
 
-    // Always start at 0
+    /* Always start at 0 */
     $.fn.arenBreakout = 0;
 
 })(jQuery);
