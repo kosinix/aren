@@ -3,8 +3,8 @@
  * https://github.com/kosinix/aren
  *
  * Copyright 2015, Nico Amarilla
- * GPL Version 2 License.
- * http://www.gnu.org/licenses/gpl.html
+ * License: GPLv3
+ * http://www.gnu.org/licenses/gpl-3.0.txt
  */
 (function ($) {
     var timers = {},
