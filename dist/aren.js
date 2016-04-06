@@ -8,153 +8,165 @@
  */
 (function ($) {
     var timers = {},
+        eventAttached = false, /* Flag if events are added */
+        currentBreakout = 0, /* Default breakout */
         methods = {
-        init: function (settings) {
-            /* Default plugin settings */
-            var defaults = {
-                cssClass: {
-                    nav: 'aren-nav',
-                    expander: 'aren-expander',
-                    showNav: 'aren-nav-show',
-                    collapsed: 'aren-nav-collapsed',
-                    expanded: 'aren-nav-expanded',
-                    parent: 'aren-nav-parent',
-                    breakout: 'aren-breakout',
-                    toggle: 'aren-nav-toggle',
-                    toggleActive: 'aren-toggle-active',
-                    subMenu: 'aren-sub-menu'
-                },
-                markup: {
-                    expander: '<span tabindex="0" class="%s"></span>',
-                    breakout: '<div class="%s"></div>'
-                },
-                breakout: [
-                    {
-                        callback: {
-                            onResize: function(css, nav){
-                                nav.children('ul').children('li').each(function () {
-                                    _fixExpanderHeight(css, $(this), 0); /* Adjust expander height */
-                                });
-                            },
-                            onDocumentClick: function (e, css) {
+            init: function (settings) {
+                /* Default plugin settings */
+                var defaults = {
+                    cssClass: {
+                        nav: 'aren-nav',
+                        expander: 'aren-expander',
+                        showNav: 'aren-nav-show',
+                        collapsed: 'aren-nav-collapsed',
+                        expanded: 'aren-nav-expanded',
+                        parent: 'aren-nav-parent',
+                        breakout: 'aren-breakout',
+                        toggle: 'aren-nav-toggle',
+                        toggleActive: 'aren-toggle-active',
+                        subMenu: 'aren-sub-menu'
+                    },
+                    markup: {
+                        expander: '<button class="%s" aria-haspopup="true" aria-expanded="false"></button>',
+                        breakout: '<div class="%s"></div>'
+                    },
+                    breakout: [
+                        {
+                            callback: {
+                                onResize: function(css, nav){
 
-                            },
-                            onNavClick: function(e, css, nav){
-                                e.stopPropagation();
-                            },
-                            onExpanderClick: function (e, css, expander) {
-                                _expandCollapseMobile(css, expander);
-                            },
-                            onExpanderKeyDown: function (e, css, expander) {
+                                },
+                                onDocumentClick: function (e, css) {
 
-                                e = e || window.event; /* Use param e if it exists. use window.event otherwise (for <=IE8) */
-
-                                var key = e.keyCode; /* Key pressed */
-
-                                if (13 === key || 32 == key ) { /* Enter and space key */
-
+                                },
+                                onNavClick: function(e, css, nav){
+                                    e.stopPropagation();
+                                },
+                                onExpanderClick: function (e, css, expander) {
                                     _expandCollapseMobile(css, expander);
+                                },
+                                onExpanderKeyDown: function (e, css, expander) {
+
+                                    e = e || window.event; /* Use param e if it exists. use window.event otherwise (for <=IE8) */
+
+                                    var key = e.keyCode; /* Key pressed */
+
+                                    if (13 === key || 32 == key ) { /* Enter and space key */
+
+                                        _expandCollapseMobile(css, expander);
+                                    }
+                                },
+                                onToggleClick: function(e, css, toggle){
+                                    var nav = $(toggle.data('target'));
+                                    if (nav.hasClass(css.showNav)) { /* Nav visible, hide it */
+                                        nav.removeClass(css.showNav);
+                                    } else { /* Nav hidden, show it */
+                                        nav.addClass(css.showNav);
+                                    }
+                                    toggle.toggleClass(css.toggleActive);
                                 }
-                            },
-                            onToggleClick: function(e, css, toggle){
-                                var nav = $(toggle.data('target'));
-                                if (nav.hasClass(css.showNav)) { /* Nav visible, hide it */
-                                    nav.removeClass(css.showNav);
-                                } else { /* Nav hidden, show it */
-                                    nav.addClass(css.showNav);
-                                    nav.children('ul').children('li').each(function (i) {
-                                        _fixExpanderHeight(settings.cssClass, $(this), 0); /* Adjust expander height */
-                                    });
+                            }
+                        } ,
+                        {
+                            callback: {
+                                onResize: function(css, nav){
+
+                                },
+                                onDocumentClick: function (e, css) {
+                                    $('.'+css.expanded).removeClass(css.expanded).find('.'+css.expander).attr('aria-expanded','false');
+                                },
+                                onNavClick: function(e, css, nav){
+                                    e.stopPropagation();
+                                },
+                                onExpanderClick: function (e, css, expander) {
+                                    _expandCollapseDesktop(css, expander);
+                                },
+                                onExpanderKeyDown: function (e, css, expander) {
+
+                                    e = e || window.event; /* Use param e if it exists. use window.event otherwise (for <=IE8) */
+
+                                    var key = e.keyCode; /* Key pressed */
+
+                                    if (13 === key || 32 === key) { /* Enter and space key */
+                                        e.preventDefault(); /* Prevent default button actions */
+                                        _expandCollapseDesktop(css, expander)
+
+                                    }
+                                },
+                                onToggleClick: function(e, css, toggle){
+
                                 }
-                                toggle.toggleClass(css.toggleActive);
                             }
                         }
-                    } ,
-                    {
-                        callback: {
-                            onResize: function(css, nav){
-                                nav.children('ul').children('li').each(function (i) {
-                                    _fixExpanderHeight(css, $(this), 0); /* Adjust expander height */
-                                });
-                            },
-                            onDocumentClick: function (e, css) {
-                                $('.'+css.expanded).removeClass(css.expanded);
-                            },
-                            onNavClick: function(e, css, nav){
-                                e.stopPropagation();
-                            },
-                            onExpanderClick: function (e, css, expander) {
-                                _expandCollapseDesktop(css, expander);
-                            },
-                            onExpanderKeyDown: function (e, css, expander) {
+                    ]
+                };
+                settings = $.extend(true, {}, defaults, settings); /* Combine defaults and user-provided settings */
 
-                                e = e || window.event; /* Use param e if it exists. use window.event otherwise (for <=IE8) */
+                return this.each(function () {
+                    var nav = $(this); /* jQuery object of our selected element */
 
-                                var key = e.keyCode; /* Key pressed */
+                    /* Add nav class */
+                    nav.addClass(settings.cssClass.nav);
 
-                                if (13 === key || 32 === key) { /* Enter and space key */
+                    nav.children('ul').children('li').each(function (i) {
+                        _listItemInit(settings, $(this), 0); /* Initialize each <li> element */
+                    });
 
-                                    _expandCollapseDesktop(css, expander)
+                    nav.append(settings.markup.breakout.replace('%s', settings.cssClass.breakout)); /* Add breakout markup to nav */
 
-                                }
-                            },
-                            onToggleClick: function(e, css, toggle){
+                    nav.data('aren.settings', settings); /* Save settings per instance on nav */
 
-                            }
-                        }
+                    /* Save settings per instance on expanders */
+                    nav.find('.' + settings.cssClass.expander).each(function (i) {
+                        $(this).data('aren.settings', settings);
+                    });
+
+                    /* Attached our events once */
+                    if(!eventAttached) {
+                        $(document).on('click.aren', function (e) {
+                            // TODO: Refactor
+                            settings.breakout[_currentBreakout(nav, settings)].callback.onDocumentClick(e, settings.cssClass);
+
+                        }).on('click.aren', '.' + settings.cssClass.nav, function (e) { /* Do not close sub nav if aren-nav was clicked */
+                            var nav = $(this),
+                                s = nav.data('aren.settings');
+                            s.breakout[_currentBreakout(nav, s)].callback.onNavClick(e, s.cssClass);
+
+                        }).on('click.aren', '.' + settings.cssClass.expander, function (e) { /* Expand/collapse sub nav */
+                            var s = $(this).data('aren.settings'),
+                                nav = $(this).parents('.' + s.cssClass.nav);
+
+                            s.breakout[_currentBreakout(nav, settings)].callback.onExpanderClick(e, s.cssClass, $(this));
+
+                        }).on('keydown.aren', '.' + settings.cssClass.expander, function (e) { /* Expand/collapse sub nav with keyboard */
+                            var s = $(this).data('aren.settings'),
+                                nav = $(this).parents('.' + s.cssClass.nav);
+
+                            s.breakout[_currentBreakout(nav, settings)].callback.onExpanderKeyDown(e, s.cssClass, $(this));
+
+                        }).on('click.aren', '.' + settings.cssClass.toggle, function (e) {
+                            var nav = $( $(this).attr('data-target')),
+                                s = nav.data('aren.settings');
+
+                            s.breakout[_currentBreakout(nav, s)].callback.onToggleClick(e, s.cssClass, $(this));
+
+                        });
+
+                        /* Do something on browser resize */
+                        $(window).on('resize.aren', function () {
+                            /* Limit firing of resize */
+                            _waitForFinalEvent(function () {
+                                currentBreakout = _currentBreakout(nav, settings);
+                                settings.breakout[currentBreakout].callback.onResize(settings.cssClass, nav);
+                            }, 100, "aren");
+                        });
+                        currentBreakout = _currentBreakout(nav, settings);
+
+                        eventAttached = true;
                     }
-                ]
-            };
-            settings = $.extend(true, {}, defaults, settings); /* Combine defaults and user-provided settings */
-
-            return this.each(function () {
-                var nav = $(this); /* jQuery object of our selected element */
-
-                /* Add nav class */
-                nav.addClass(settings.cssClass.nav);
-
-                nav.children('ul').children('li').each(function (i) {
-                    _listItemInit(settings, $(this), 0); /* Initialize each <li> element */
                 });
-
-                nav.append(settings.markup.breakout.replace('%s', settings.cssClass.breakout)); /* Add breakout markup to nav */
-
-                /* User interaction */
-                $(document).on('click', function(e){
-
-                    settings.breakout[$.fn.arenBreakout].callback.onDocumentClick(e, settings.cssClass);
-
-                }).on('click', '.' + settings.cssClass.nav, function (e) { /* Do not close sub nav if aren-nav was clicked */
-
-                    settings.breakout[$.fn.arenBreakout].callback.onNavClick(e, settings.cssClass);
-
-                }).on('click', '.' + settings.cssClass.expander, function (e) { /* Expand/collapse sub nav */
-
-                    settings.breakout[$.fn.arenBreakout].callback.onExpanderClick(e, settings.cssClass, $(this));
-
-                }).on('keydown', '.' + settings.cssClass.expander, function (e) { /* Expand/collapse sub nav with keyboard */
-
-                    settings.breakout[$.fn.arenBreakout].callback.onExpanderKeyDown(e, settings.cssClass, $(this));
-
-                }).on('click', '.' + settings.cssClass.toggle, function (e) {
-
-                    settings.breakout[$.fn.arenBreakout].callback.onToggleClick(e, settings.cssClass, $(this));
-
-                });
-
-                /* Do something on browser resize */
-                $(window).on('resize', function(){
-                    /* Limit firing of resize */
-                    _waitForFinalEvent(function(){
-                        $.fn.arenBreakout = _currentBreakout(nav, settings);
-                        settings.breakout[$.fn.arenBreakout].callback.onResize(settings.cssClass, nav);
-                    }, 100, "aren");
-                });
-                $.fn.arenBreakout = _currentBreakout(nav, settings);
-            });
-        }
-    };
-
+            }
+        };
 
     /* Initialize list item */
     function _listItemInit(settings, currentListItem, level) {
@@ -170,7 +182,6 @@
                 currentListItem.addClass(settings.cssClass.collapsed);
             }
             anchor.after(settings.markup.expander.replace('%s', settings.cssClass.expander)); /* Add expander after <a> */
-            _fixExpanderHeight(settings.cssClass, currentListItem); /* Fix expander height */
             /* Initialize children items recursively */
             subNav.children('li').each(function (i) {
                 _listItemInit(settings, $(this), ++level);
@@ -197,8 +208,10 @@
 
         if (subNav.is(':visible')) { /* If visible, hide it */
             listItem.removeClass(css.expanded).addClass(css.collapsed); /* Update parent classes */
+            expander.attr('aria-expanded', 'false');
         } else { /* If hidden, show it */
             listItem.removeClass(css.collapsed).addClass(css.expanded); /* Update parent classes */
+            expander.attr('aria-expanded', 'true');
         }
     }
 
@@ -211,10 +224,14 @@
             /* Collapse current list */
             listItem.removeClass(css.expanded)
                 .addClass(css.collapsed);
+            expander.attr('aria-expanded', 'false');
+
             /* Collapse all expanded children */
             subNav.find('.'+css.expanded)
                 .removeClass(css.expanded)
-                .addClass(css.collapsed);
+                .addClass(css.collapsed)
+                .find('.'+css.expander).attr('aria-expanded', 'false');
+
         } else { /* Show subNav. Use CSS */
             listItem.removeClass(css.collapsed)
                 .addClass(css.expanded);
@@ -225,7 +242,8 @@
                     .find('.'+css.expanded)
                     .removeClass(css.expanded)
                     .addClass(css.collapsed);
-            })
+
+            });
         }
     }
 
@@ -256,9 +274,6 @@
         }
         return false;
     };
-
-    /* Always start at 0 */
-    $.fn.arenBreakout = 0;
 
 })(jQuery);
 

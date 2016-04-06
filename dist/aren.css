@@ -43,8 +43,26 @@
 }
 
 /* Links */
-.aren-nav a {
+.aren-nav a,
+.aren-nav a:hover {
     text-decoration: none;
+}
+
+/* Toggler */
+.aren-nav-toggle {
+    background: none;
+}
+.aren-nav-toggle .icon-bar {
+    background: #000;
+}
+
+/* Expander */
+.aren-expander {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.aren-expander:after {
+    border-color: #000 transparent;
 }
 
 /* Breakout. Workaround for js to know the current breakout */
@@ -115,6 +133,8 @@
         right: 0;
         top: 0;
         cursor: pointer;
+        background: none;
+        border:0;
     }
 
     /* Expander arrow */
@@ -240,12 +260,6 @@
     /* Links */
     .aren-theme-dark.aren-nav a {
         color: #ffffff;
-    }
-
-    /* Links hover on click */
-    .aren-theme-dark.aren-nav a:active {
-        padding-top: 16px;
-        padding-bottom: 14px;
     }
 
     /* Links hover on focus */
@@ -384,6 +398,7 @@
         min-width: 200px;
         z-index: 1000;
         display: none;
+        background: white;
     }
 
     /* 2nd level sub menus */
@@ -493,5 +508,48 @@
     /* Sub menus */
     .aren-theme-dark .aren-sub-menu {
         background: #000000;
+    }
+
+    /** LIGHT THEME **/
+
+    /* Nav */
+    .aren-theme-light.aren-nav {
+        background: #ffffff;
+    }
+
+    /* Links */
+    .aren-theme-light.aren-nav a {
+        color: #000000;
+    }
+
+    /* Links hover on click */
+    .aren-theme-light.aren-nav a:active {
+        padding-top: 11px;
+        padding-bottom: 9px;
+    }
+
+    /* Links hover on focus */
+    .aren-theme-light.aren-nav a:hover,
+    .aren-theme-light.aren-nav a:focus {
+        background: #eeeeee;
+    }
+
+    /* Expander */
+    .aren-theme-light .aren-expander:hover,
+    .aren-theme-light .aren-expander:focus,
+    .aren-theme-light .aren-expander:active {
+        background: #eeeeee;
+    }
+
+    /* Expander */
+    .aren-theme-light > ul > li > .aren-expander:hover:after,
+    .aren-theme-light > ul > li > .aren-expander:focus:after,
+    .aren-theme-light > ul > li > .aren-expander:active:after {
+        border-color: black transparent;
+    }
+
+    /* Sub menus */
+    .aren-theme-light .aren-sub-menu {
+        background: #ffffff;
     }
 }
