@@ -1,95 +1,143 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <title>AREN  by kosinix</title>
+    <title>AREN by kosinix</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="dist/aren.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">AREN </h1>
-      <h2 class="project-tagline">AREN - Accessible Responsive Nav</h2>
-      <a href="https://github.com/kosinix/aren" class="btn">View on GitHub</a>
-      <a href="https://github.com/kosinix/aren/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/kosinix/aren/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+</head>
+<body>
+<section class="page-header">
+    <h1 class="project-name">AREN </h1>
 
-    <section class="main-content">
-      <h3>Dark Theme</h3>
-      <div class="navbar">
-        <button id="aren-nav-toggle" tabindex="0" type="button" class="aren-nav-toggle aren-theme-dark" data-target="#nav" aria-controls="nav">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+    <h2 class="project-tagline">AREN - Accessible Responsive Nav</h2>
+    <a href="https://github.com/kosinix/aren" class="btn">View on GitHub</a>
+    <a href="https://github.com/kosinix/aren/zipball/master" class="btn">Download .zip</a>
+    <a href="https://github.com/kosinix/aren/tarball/master" class="btn">Download .tar.gz</a>
+</section>
+
+<section class="main-content">
+    <h3>Dark Theme</h3>
+
+    <div class="navbar">
+        <button id="aren-nav-toggle" tabindex="0" type="button" class="aren-nav-toggle aren-theme-dark" data-target="#nav-dark" aria-controls="nav">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
         </button>
-        <nav id="nav" role="navigation" class="aren-nav aren-theme-dark">
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a>
-              <ul>
-                <li><a href="#people">People</a>
-                  <ul>
-                    <li><a href="#ceo">CEO</a></li>
-                  </ul>
+        <nav id="nav-dark" role="navigation" class="aren-nav aren-theme-dark">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a>
+                    <ul>
+                        <li><a href="#people">People</a>
+                            <ul>
+                                <li><a href="#ceo">CEO</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#company">Company</a>
+                            <ul>
+                                <li><a href="#board">Board</a></li>
+                                <li><a href="#history">History</a>
+                                    <ul>
+                                        <li><a href="#two">Two Years</a></li>
+                                        <li><a href="#three">Three Years</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
-                <li><a href="#company">Company</a>
-                  <ul>
-                    <li><a href="#board">Board</a></li>
-                    <li><a href="#history">History</a>
-                      <ul>
-                        <li><a href="#two">Two Years</a></li>
-                        <li><a href="#three">Three Years</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li><a href="#link1">Contact</a></li>
-          </ul>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
         </nav>
-      </div>
+    </div>
+    <h3>Light Theme</h3>
 
-      <h3>Installation</h3>
-      <p>Include the styles in head</p>
+    <div class="navbar">
+        <button id="aren-nav-toggle-light" tabindex="0" type="button" class="aren-nav-toggle aren-theme-light" data-target="#nav-light" aria-controls="nav">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <nav id="nav-light" role="navigation" class="aren-nav aren-theme-light">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a>
+                    <ul>
+                        <li><a href="#people">People</a>
+                            <ul>
+                                <li><a href="#ceo">CEO</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#company">Company</a>
+                            <ul>
+                                <li><a href="#board">Board</a></li>
+                                <li><a href="#history">History</a>
+                                    <ul>
+                                        <li><a href="#two">Two Years</a></li>
+                                        <li><a href="#three">Three Years</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+    <h3>Installation</h3>
+
+    <p>Include the styles in head</p>
       <pre>
 &lt;link rel="stylesheet" href="css/aren.css"&gt;</pre>
 
-      <p>Include jQuery and the script before the closing body tag:</p>
+    <p>Include jQuery and the script before the closing body tag:</p>
     <pre>
 &lt;script src="js/jquery-1.11.3.min.js">&lt;/script>
 &lt;script src="js/aren.min.js">&lt;/script></pre>
 
-      <h3>Usage</h3>
-      <p>Prepare the required mark-up:</p>
-    <pre>
-&lt;button id="aren-nav-toggle" tabindex="0" type="button" class="aren-nav-toggle aren-theme-dark" data-target="#nav" aria-controls="nav"&gt;
-  &lt;span class="icon-bar"&gt;&lt;/span&gt;
-  &lt;span class="icon-bar"&gt;&lt;/span&gt;
-  &lt;span class="icon-bar"&gt;&lt;/span&gt;
-&lt;/button&gt;
-&lt;nav id="nav" role="navigation" class="aren-nav aren-theme-dark"&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href="#people"&gt;People&lt;/a&gt;
-          &lt;ul&gt;
-            &lt;li&gt;&lt;a href="#ceo"&gt;CEO&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href="#link1"&gt;Contact&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;</pre>
+    <h3>Usage</h3>
 
-      <p>Initialize the nav:</p>
+    <p>Prepare the required mark-up:</p>
+    <pre>&lt;button id="aren-nav-toggle" tabindex="0" type="button" class="aren-nav-toggle aren-theme-dark" data-target="#nav" aria-controls="nav">
+    &lt;span class="icon-bar">&lt;/span>
+    &lt;span class="icon-bar">&lt;/span>
+    &lt;span class="icon-bar">&lt;/span>
+&lt;/button>
+&lt;nav id="nav" role="navigation" class="aren-nav aren-theme-dark">
+    &lt;ul>
+        &lt;li>&lt;a href="#home">Home&lt;/a>&lt;/li>
+        &lt;li>&lt;a href="#about">About&lt;/a>
+            &lt;ul>
+                &lt;li>&lt;a href="#people">People&lt;/a>
+                    &lt;ul>
+                        &lt;li>&lt;a href="#ceo">CEO&lt;/a>&lt;/li>
+                    &lt;/ul>
+                &lt;/li>
+                &lt;li>&lt;a href="#company">Company&lt;/a>
+                    &lt;ul>
+                        &lt;li>&lt;a href="#board">Board&lt;/a>&lt;/li>
+                        &lt;li>&lt;a href="#history">History&lt;/a>
+                            &lt;ul>
+                                &lt;li>&lt;a href="#two">Two Years&lt;/a>&lt;/li>
+                                &lt;li>&lt;a href="#three">Three Years&lt;/a>&lt;/li>
+                            &lt;/ul>
+                        &lt;/li>
+                    &lt;/ul>
+                &lt;/li>
+            &lt;/ul>
+        &lt;/li>
+        &lt;li>&lt;a href="#contact">Contact&lt;/a>&lt;/li>
+    &lt;/ul>
+&lt;/nav></pre>
+
+    <p>Initialize the nav:</p>
     <pre>
 &lt;script>
     jQuery( document ).ready(function($) {
@@ -97,18 +145,26 @@
     });
 &lt;/script></pre>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/kosinix/aren">AREN </a> is maintained by <a href="https://github.com/kosinix">kosinix</a>.</span>
+    <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/kosinix/aren">AREN </a> is maintained by <a
+                href="https://github.com/kosinix">kosinix</a>.</span>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a
+                href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a
+                href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+    </footer>
 
-    </section>
+</section>
 
-    <script src="scripts/jquery-1.11.3.min.js"></script>
-    <script src="dist/aren.js"></script>
-    <script>
-      $('#nav').aren();
-    </script>
-  </body>
+<script src="scripts/jquery-1.11.3.min.js"></script>
+<script src="dist/aren.js"></script>
+<script>
+    $('#nav-dark').aren();
+    $('#nav-light').aren({
+        cssClass: {
+            toggle: 'aren-nav-toggle expanderific'
+        }
+    });
+</script>
+</body>
 </html>
