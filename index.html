@@ -21,7 +21,17 @@
 </section>
 
 <section class="main-content">
-    <h3>Dark Theme</h3>
+    <h3>Features</h3>
+    <ul>
+        <li>Keyboard support</li>
+        <li>ARIA support</li>
+        <li>Responsive</li>
+        <li>Overridable defaults</li>
+        <li>Themes (or none)</li>
+        <li>Tested with NVDA (screen reader for the blind)</li>
+    </ul>
+
+    <h4>Dark Theme</h4>
 
     <div class="navbar">
         <button id="aren-nav-toggle" tabindex="0" type="button" class="aren-nav-toggle aren-theme-dark" data-target="#nav-dark" aria-controls="nav">
@@ -56,7 +66,7 @@
             </ul>
         </nav>
     </div>
-    <h3>Light Theme</h3>
+    <h4>Light Theme</h4>
 
     <div class="navbar">
         <button id="aren-nav-toggle-light" tabindex="0" type="button" class="aren-nav-toggle aren-theme-light" data-target="#nav-light" aria-controls="nav">
@@ -144,6 +154,98 @@
         $('#nav').aren();
     });
 &lt;/script></pre>
+
+    <h3>Overriding the Default Classes</h3>
+    <pre>
+&lt;script>
+    jQuery( document ).ready(function($) {
+        $('#nav').aren({
+            cssClass: {
+                nav: 'aren-nav',
+                expander: 'aren-expander',
+                showNav: 'aren-nav-show',
+                collapsed: 'aren-nav-collapsed',
+                expanded: 'aren-nav-expanded',
+                parent: 'aren-nav-parent',
+                breakout: 'aren-breakout',
+                toggle: 'aren-nav-toggle',
+                toggleActive: 'aren-toggle-active',
+                subMenu: 'aren-sub-menu'
+            }
+        });
+    });
+&lt;/script></pre>
+    <p>Make sure to change the class names in CSS when overriding the defaults</p>
+
+    <h3>Overriding the Generated Markup</h3>
+    <pre>
+&lt;script>
+    jQuery( document ).ready(function($) {
+        $('#nav').aren({
+            markup: {
+                expander: '&lt;button class="%s" aria-haspopup="true" aria-expanded="false">&lt;/button>',
+                breakout: '&lt;div class="%s">&lt;/div>'
+            }
+        });
+    });
+&lt;/script></pre>
+
+
+    <h3>Custom Event Callbacks</h3>
+    <pre>
+&lt;script>
+    jQuery( document ).ready(function($) {
+        $('#nav').aren({
+            breakout: [
+                { // Callbacks for mobile nav
+                    callback: {
+                        onResize: function(css, nav){
+                            // When browser is resized
+                        },
+                        onDocumentClick: function (e, css) {
+                            // When anywhere outside of nav was clicked
+                        },
+                        onNavClick: function(e, css, nav){
+                            // When anywhere inside of nav was clicked except expander
+                        },
+                        onExpanderClick: function (e, css, expander) {
+                            // When expander was clicked
+                        },
+                        onExpanderKeyDown: function (e, css, expander) {
+                            // When keyboard is pressed on expander
+                        },
+                        onToggleClick: function(e, css, toggle){
+                            // When toggler is clicked
+                        }
+                    }
+                } ,
+                { // Callbacks for desktop
+                    callback: {
+                        onResize: function(css, nav){
+                            // When browser is resized
+                        },
+                        onDocumentClick: function (e, css) {
+                            // When anywhere outside of nav was clicked
+                        },
+                        onNavClick: function(e, css, nav){
+                            // When anywhere inside of nav was clicked except expander
+                        },
+                        onExpanderClick: function (e, css, expander) {
+                            // When expander was clicked
+                        },
+                        onExpanderKeyDown: function (e, css, expander) {
+                            // When keyboard is pressed on expander
+                        },
+                        onToggleClick: function(e, css, toggle){
+                            // When toggler is clicked. Might not be needed on desktop
+                        }
+                    }
+                }
+            ]
+        });
+    });
+&lt;/script></pre>
+    <p>See source code for default implementation.</p>
 
     <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/kosinix/aren">AREN </a> is maintained by <a
